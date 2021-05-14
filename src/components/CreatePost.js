@@ -1,15 +1,23 @@
 import { useState } from "react";
 import { Form, Button, Container } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
+import { connect } from 'react-redux'
+import { createBlogPost } from '../actions'
 
-const CreatePost = ({ create }) => {
+const mapDispatchToProps = dispatch => {
+  return {
+    createPost : post => dispatch(createBlogPost(post))
+  }
+}
+
+const SubmitPost = (props) => {
   let history = useHistory()
   const [blogTitle, setBlogTitle] = useState("");
   const [blogBody, setBlogBody] = useState("");
   const [blogAuthor, setBlogAuthor] = useState("");
   const submitHandler = (e) => {
     e.preventDefault();
-    create({
+    props.createPost({
       blogTitle,
       blogBody,
       blogAuthor,
@@ -72,5 +80,7 @@ const CreatePost = ({ create }) => {
     </Container>
   );
 };
+
+const CreatePost = connect(null,mapDispatchToProps)(SubmitPost)
 
 export default CreatePost;

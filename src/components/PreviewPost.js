@@ -1,9 +1,25 @@
-import { Card } from 'react-bootstrap'
+import { Card, Button } from 'react-bootstrap'
+import { connect } from 'react-redux'
+import { DeletePost } from '../actions';
 
-const PreviewPost = (props) => {
+const mapDispatchToProps = dispatch => {
+  return {
+    deletePost: id => dispatch(DeletePost(id))
+  }
+}
+
+const SinglePost = (props) => {
+
+  const handleClick = () => {
+    props.deletePost(props.id)
+  }
+
   return (
     <Card>
-      <Card.Header>{props.title}</Card.Header>
+      <Card.Header>
+        {props.title}
+        <Button onClick={handleClick} variant="primary" className="ml-auto">Delete Post</Button>
+      </Card.Header>
       <Card.Body>
         <blockquote className="blockquote mb-0">
           <p>
@@ -17,5 +33,7 @@ const PreviewPost = (props) => {
     </Card>
   );
 };
+
+const PreviewPost = connect(null, mapDispatchToProps)(SinglePost)
 
 export default PreviewPost;
